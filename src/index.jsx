@@ -2,17 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import Navbar from "./Components/Navbar";
-import Home from "./Routes/Home";
-import Footer from "./Components/Footer";
 import "./index.css";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App';
+import Login from './Routes/Login'
+import Detail from "./Routes/Detail";
+import Home from "./Routes/Home";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //Lembre-se de configurar suas rotas e seu contexto aqui
 root.render(
-  <React.StrictMode>
-    <Navbar />
-    <Home />
-    <Footer />
-  </React.StrictMode>
+   <React.StrictMode>
+      <BrowserRouter>
+         <Routes>
+            <Route path="/" element={<App />}>
+               <Route index element={<Home />}></Route>
+               <Route path="/login" element={<Login />}></Route>
+               <Route path="/dentista/:id" element={<Detail />}></Route>
+            </Route>
+         </Routes>
+      </BrowserRouter>
+   </React.StrictMode>
 );
