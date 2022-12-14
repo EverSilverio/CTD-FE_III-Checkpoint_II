@@ -1,24 +1,23 @@
 import styles from "./Navbar.module.css";
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext } from "../Contexts/ThemeContext";
+import { AuthContext } from "../Contexts/AuthContext";
 
 const Navbar = () => {
-   const token = localStorage.getItem('@DHODONTO_TOKEN')
-   const navigate = useNavigate();
-   const [ isLogged, setIsLogged] = useState(token !== null)
+   const keyToken = "@DHODONTO_TOKEN"
 
-   useEffect( ()=> {
-      setIsLogged(localStorage.getItem('@DHODONTO_TOKEN'))
-      console.log('use-effect')
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   },[]) 
+   const { theme, setTheme } = useContext(ThemeContext)
+   const { isAuth, setIsAuth } = useContext(AuthContext)
+
+   const toggleTheme = () => {
+      setTheme(theme === 'light' ? 'dark' : 'light')
+   }
 
    const deslogar = () => {
-      localStorage.removeItem('@DHODONTO_TOKEN')
+      localStorage.removeItem(keyToken)
       console.log('desloguei');
-      setIsLogged(false)
-      navigate('/login')
+      setIsAuth(false)
    }
 
    return (
@@ -26,7 +25,7 @@ const Navbar = () => {
          {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar navbar-dark bg-dark ou navbar-light bg-light*/}
          <nav
-            className={`navbar navbar-expand-sm navbar-light bg-light`}
+            className={`navbar navbar-expand-sm navbar-${theme} bg-${theme}`}
             aria-label="Third navbar example"
          >
             <div className="container">
@@ -64,27 +63,25 @@ const Navbar = () => {
                 ao formulário de login
                 O botão de logout deverá ser testado darkmode
                 se sim, btn-dark, se não, btn-light */}
-                {
-                  isLogged 
-                     ? 
-                        <Link className="nav-link" onClick={() => deslogar()}>
-                           Deslogar
-                        </Link>
-                     :
-                        <Link className="nav-link" to="/login">
-                           Login
-                        </Link>
-                }
+                        {
+                           isAuth
+                              ?
+                              <Link className="nav-link" to="/login" onClick={() => deslogar()}>
+                                 Deslogar
+                              </Link>
+                              :
+                              <Link className="nav-link" to="/login">
+                                 Login
+                              </Link>
+                        }
                      </li>
                      <li className={`nav-item`}>
                         {/* Ao ser clicado, esse botão mudará a aplicação para dark mode ou light mode.
                  Lembre-se de usar um estado no contexto para fazer essa alteração.
                  Na linha seguinte deverá ser feito um teste se a aplicação
                  está em dark mode e deverá utilizar o icone ☀ ou 🌙 e btn-dark ou btn-light*/}
-                        <button
-                           className={`btn btn-light${styles.btnStyle
-                              }`}
-                        >
+                        <button onClick={() => toggleTheme()}
+                           className={`btn btn-${theme} ${styles.btnStyle}`}>
                            ☀ 🌙{" "}
                         </button>
                      </li>

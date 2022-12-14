@@ -1,16 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import api from "../Services/api";
 import styles from "./Form.module.css";
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../Contexts/AuthContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
+
 
 const LoginForm = () => {
-
    const keyToken = "@DHODONTO_TOKEN"
+   const { setIsAuth } = useContext(AuthContext)
+   const { theme } = useContext(ThemeContext)
+
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
    const navigate = useNavigate();
 
-   const handleSubmit = (e) => {
+   async function handleSubmit(e) {
       //Nesse handlesubmit você deverá usar o preventDefault,
       //enviar os dados do formulário e enviá-los no corpo da requisição 
       //para a rota da api que faz o login /auth
@@ -20,24 +26,23 @@ const LoginForm = () => {
       //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
 
       e.preventDefault()
-      auth()
 
-   };
-
-   async function auth() {
       try {
          const response = await api.post("/auth", {
             username,
             password
          })
 
-         localStorage.setItem(keyToken, response.data.token);
-
+         console.log(response.data.token);
+         localStorage.setItem(keyToken, response.data.token)
+         setIsAuth(true)
          navigate("/")
 
       } catch (error) {
-         localStorage.removeItem(keyToken);
-         alert('Falha no Login!')
+         console.log(error);
+         localStorage.removeItem(keyToken)
+         setIsAuth(false)
+         alert('Falha no Login!\n' + error)
       }
    }
 
@@ -46,12 +51,12 @@ const LoginForm = () => {
          {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
          <div
-            className={`text-center card container ${styles.card}`}
+            className={`text-center card  container ${styles.card} ${theme}` }
          >
             <div className={`card-body ${styles.CardBody}`}>
                <form onSubmit={handleSubmit}>
                   <input
-                     className={`form-control ${styles.inputSpacing}`}
+                     className={`form-control ${styles.inputSpacing} `}
                      placeholder="Login"
                      name="login"
                      onChange={(e) => setUsername(e.target.value)}

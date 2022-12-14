@@ -37,11 +37,9 @@ const DetailCard = () => {
 
          console.log(response.data);
       } catch (error) {
-         alert('Falha na buscar de Dentista por ID')
+         alert('Falha na busca de Dentista por ID')
       }
    }
-
-
 
    return (
       //As instruções que estão com {''} precisam ser 
