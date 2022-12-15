@@ -14,9 +14,9 @@ const Navbar = () => {
       setTheme(theme === 'light' ? 'dark' : 'light')
    }
 
-   const deslogar = () => {
+   const deslogar = () => { 
       localStorage.removeItem(keyToken)
-      console.log('desloguei');
+      console.log('desloguei'); 
       setIsAuth(false)
    }
 
@@ -82,7 +82,7 @@ const Navbar = () => {
                  está em dark mode e deverá utilizar o icone ☀ ou 🌙 e btn-dark ou btn-light*/}
                         <button onClick={() => toggleTheme()}
                            className={`btn btn-${theme} ${styles.btnStyle}`}>
-                           ☀ 🌙{" "}
+                              { theme === 'dark' ? "☀" : "🌙"}
                         </button>
                      </li>
                   </ul>

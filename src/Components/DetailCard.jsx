@@ -4,9 +4,13 @@ import ScheduleFormModal from "./ScheduleFormModal";
 import styles from "./DetailCard.module.css";
 import { useParams } from 'react-router-dom';
 import api from "../Services/api";
+import { useContext } from "react";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 const DetailCard = () => {
    const token = localStorage.getItem('@DHODONTO_TOKEN')
+   const { theme } = useContext(ThemeContext)
+   
 
    const [ dentista, setDentista ] = useState({
       nome: '',
@@ -35,7 +39,6 @@ const DetailCard = () => {
 
          setDentista(response.data)
 
-         console.log(response.data);
       } catch (error) {
          alert('Falha na busca de Dentista por ID')
       }
@@ -46,7 +49,7 @@ const DetailCard = () => {
       //substituídas com as informações que vem da api
       <>
          <h1>Detalhe sobre: {dentista.nome} {dentista.sobrenome} </h1>
-         <section className="card col-sm-12 col-lg-6 container">
+         <section className={`${theme} card col-sm-12 col-lg-6 container`}>
             {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
             <div
@@ -75,7 +78,7 @@ const DetailCard = () => {
                      <button
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
-                        className={`btn btn-light ${styles.button
+                        className={`btn btn-${theme} ${styles.button
                            }`}
                      >
                         Marcar consulta
